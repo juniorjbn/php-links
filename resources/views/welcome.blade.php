@@ -45,6 +45,12 @@
                 text-align: center;
             }
 
+            .content2 {
+                text-align: center;
+                white-space: pre;
+                content:"\a";
+            }
+
             .title {
                 font-size: 84px;
             }
@@ -76,24 +82,27 @@
                     @endauth
                 </div>
             @endif
-            <div class="content">
-                @foreach ($links as $link) 
-                    <li>{{ $link->title }}</li>
-                @endforeach
-            </div>
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Getup
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    Example
+                    <br>
                 </div>
+            </div>
+
+            <div class="content2">
+                <br>
+            </div>
+
+            <div>
+                @foreach ($links as $link) 
+                    <li>{{ $link->title }}</li>
+                @endforeach
+                <li>No Name</li> <!-- Usuario HardCoded-->
             </div>
         </div>
     </body>
