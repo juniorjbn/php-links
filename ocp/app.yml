@@ -1,0 +1,149 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: $ENV
+objects:
+- apiVersion: "v1"
+  kind: BuildConfig
+  metadata:
+    annotations: {}
+    creationTimestamp: null
+    labels:
+      app: $ENV
+    name: $ENV
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: $ENV:latest
+    postCommit: {}
+    resources:
+      limits:
+        cpu: 1170m
+        memory: 4Gi
+      requests:
+        cpu: 293m
+        memory: 2Gi
+    runPolicy: Serial
+    source:
+      contextDir: /
+      git:
+        ref: $BRANCH_NAME
+        uri: $GITHUB
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: php:7.0
+          namespace: openshift
+      type: Source
+- apiVersion: "v1"
+  kind: DeploymentConfig
+  metadata:
+    name: $ENV
+    labels:
+      app: $ENV
+  spec:
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          app: $ENV
+          name: pod
+      spec:
+        containers:
+        - env:
+          - name: PATH
+            value: /opt/app-root/src/bin:/opt/app-root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/rh/rh-php70/root/usr/bin
+          - name: SUMMARY
+            value: Platform for building and running PHP 7.0 applications
+          - name: STI_SCRIPTS_URL
+            value: image:///usr/libexec/s2i
+          - name: STI_SCRIPTS_PATH
+            value: /usr/libexec/s2i
+          - name: HOME
+            value: /opt/app-root/src
+          - name: BASH_ENV
+            value: /opt/app-root/etc/scl_enable
+          - name: ENV
+            value: /opt/app-root/etc/scl_enable
+          - name: PROMPT_COMMAND
+            value: . /opt/app-root/etc/scl_enable
+          - name: PHP_VERSION
+            value: "7.0"
+          - name: DB_HOST
+            value: mysql
+          - name: DB_DATABASE
+            value: sampledb
+          - name: DB_USERNAME
+            value: user0MS
+          - name: DB_PASSWORD
+            value: qDt1GislmwRJGXRG
+          - name: DOCUMENTROOT
+            value: /public
+          name: container
+          image: $IMAGE_TAG
+          imagePullPolicy: Always
+          ports:
+          - name: web-port
+            containerPort: 8080
+            protocol: TCP
+          resources:
+           limits:
+             cpu: 731m
+             memory: 1Gi
+           requests:
+             cpu: 18m
+             memory: 256Mi
+- apiVersion: "v1"
+  kind: Service
+  metadata:
+    name: $ENV
+    labels:
+      app: $ENV
+  spec:
+    ports:
+      - port: 80
+        targetPort: "web-port"
+        protocol: TCP
+    selector:
+      deploymentconfig: $ENV
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: $ENV
+    labels:
+      app: $ENV
+  spec:
+    host: $HOSTNAME
+    to:
+      kind: Service
+      name: $ENV
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    annotations: {}
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: $ENV
+      template: $ENV
+    name: $ENV
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: $IMAGE_TAG:latest
+      generation: null
+      importPolicy: {}
+      name: latest
+      referencePolicy:
+        type: ""
+
+
