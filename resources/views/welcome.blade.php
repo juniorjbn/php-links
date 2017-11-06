@@ -102,7 +102,7 @@
                 @foreach ($links as $link) 
                     <li>{{ $link->title }}</li>
                 @endforeach
-                <li>New Name</li> <!-- Usuario HardCoded-->
+                <li>New Name2</li> <!-- Usuario HardCoded-->
             </div>
         </div>
     </body>
