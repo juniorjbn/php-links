@@ -36,7 +36,7 @@ def slackStartJob () {
     stage 'slackStartJob'
     sh 'git log -1 --pretty=%B > commit-log.txt'
     GIT_COMMIT=readFile('commit-log.txt').trim()
-    slackSend channel: 'gerdau-poc', color: '#37d660', message: ":metal: - PROJECT - ${env.JOB_NAME} - Environment created and on the road! - (${GIT_COMMIT})"
+    slackSend channel: 'aristides', color: '#37d660', message: ":metal: - PROJECT - ${env.JOB_NAME} - Environment created and on the road! - (${GIT_COMMIT})"
 }
 
 def branchDeploy () {
@@ -47,7 +47,7 @@ def branchDeploy () {
 def branchCleanup () {
 	stage 'branchCleanup'
     sh "ocp/cleanup.sh"
-    slackSend channel: 'gerdau-poc', color: '#f74545', message: ":thumbsup_all: - PROJECT - ${env.JOB_NAME} - (${GIT_COMMIT}) - Branch reviwed and environment deleted!"
+    slackSend channel: 'aristides', color: '#f74545', message: ":thumbsup_all: - PROJECT - ${env.JOB_NAME} - (${GIT_COMMIT}) - Branch reviwed and environment deleted!"
 }
 
 def masterDevDeploy () {
@@ -90,7 +90,7 @@ def userApproval () {
     try {
     input message: 'Is this version ready ?', submitter: 'dev,admin'
 	} catch (err) {
-	    slackSend channel: 'gerdau-poc', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
+	    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
 	    error ("aqui foi abortado") 
 	}
 }
@@ -98,14 +98,14 @@ def userApproval () {
 def promoteQA () {
 	stage 'promoteQA'
     openshiftTag(srcStream: "app-dev", srcTag: "latest", destStream: "app-dev", destTag: "qaready")
-    openshiftDeploy(depCfg: 'app-qa', namespace: 'gerdau-poc', verbose: 'true', waitTime: '10', waitUnit: 'min')
+    openshiftDeploy(depCfg: 'app-qa', namespace: 'aristides', verbose: 'true', waitTime: '10', waitUnit: 'min')
     openshiftVerifyDeployment(deploymentConfig: 'app-qa')
 }
 
 def promotePROD () {
 	stage 'promotePROD'
     openshiftTag(srcStream: "app-dev", srcTag: "latest", destStream: "app-dev", destTag: "prodready")
-    openshiftDeploy(depCfg: 'app-prod', namespace: 'gerdau-poc', verbose: 'true', waitTime: '10', waitUnit: 'min')
+    openshiftDeploy(depCfg: 'app-prod', namespace: 'aristides', verbose: 'true', waitTime: '10', waitUnit: 'min')
     openshiftVerifyDeployment(deploymentConfig: 'app-prod')
 }
 
@@ -113,5 +113,5 @@ def slackFinishedJob () {
    stage 'slackFinishedJob'
    sh 'git log -1 --pretty=%B > commit-log.txt'
    GIT_COMMIT=readFile('commit-log.txt').trim()
-   slackSend channel: 'gerdau-poc', color: '#1e602f', message: ":rocket: - UPDATE approved to production: PROJECT - ${env.JOB_NAME} - Build Number - ${env.BUILD_NUMBER} - (${GIT_COMMIT})"
+   slackSend channel: 'aristides', color: '#1e602f', message: ":rocket: - UPDATE approved to production: PROJECT - ${env.JOB_NAME} - Build Number - ${env.BUILD_NUMBER} - (${GIT_COMMIT})"
 }
