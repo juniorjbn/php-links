@@ -13,7 +13,7 @@ node {
         branchCleanup()
     }
  
-    /* master branch dev-prod */
+    /* master branch dev-qa-prod */
     if  ( env.BRANCH_NAME == 'master' ) {
         masterDevDeploy()
         allTests()
