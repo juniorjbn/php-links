@@ -103,6 +103,7 @@
                     <li>{{ $link->title }}</li>
                 @endforeach
                 <li>No Name</li> <!-- Usuario HardCoded-->
+                <li>" . getenv('AMBIENTE') . "</li> <!-- ambiente -->
             </div>
         </div>
     </body>
