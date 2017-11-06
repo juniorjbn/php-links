@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="links">
-                    Clean Example #1
+                    Clean Example #2
                     <br>
                 </div>
             </div>
