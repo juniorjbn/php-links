@@ -26,9 +26,9 @@ sed "
   s|__BRANCH_NAME__|$BRANCH_NAME|;
   " -i ocp/app.yml 
 
-oc new-app -f ocp/app.yml && echo $?
+oc new-app -f ocp/app.yml 
 
-oc start-build $ENV -F -w 
+oc start-build $ENV
 
 #oc rollout latest $ENV 
 
