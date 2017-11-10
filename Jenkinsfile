@@ -18,7 +18,7 @@ node {
         masterDevDeploy()
         allTests()
         promoteQA()
-        userApproval()
+        userApproval2()
         promotePROD()
         slackFinishedJob()
     }
@@ -47,7 +47,7 @@ def branchDeploy () {
 def branchCleanup () {
 	stage 'branchCleanup'
     sh "ocp/cleanup.sh"
-    slackSend channel: 'aristides', color: '#f74545', message: ":thumbsup_all: - PROJECT - ${env.JOB_NAME} - (${GIT_COMMIT}) - Branch reviwed and environment deleted!"
+    slackSend channel: 'aristides', color: '#f74545', message: ":thumbsup_all: - PROJECT - ${env.JOB_NAME} - (${GIT_COMMIT}) - Branch environment deleted!"
 }
 
 def masterDevDeploy () {
@@ -97,6 +97,18 @@ def userApproval () {
 		}
 	}
 }
+
+def userApproval2 () {
+	stage 'userApproval'
+    try {
+    input message: 'Is this version ready ? In 1 hour this step will be processed automatically!', submitter: 'dev,admin'
+	} catch (err) {
+	    sh "ocp/cleanup.sh"
+	    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
+	    error ("aqui foi abortado") 
+	}
+}
+
 
 def promoteQA () {
 	stage 'promoteQA'
