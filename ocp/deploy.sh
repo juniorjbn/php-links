@@ -24,9 +24,13 @@ sed "
   s|__IMAGE_TAG__|$IMAGE_TAG|;
   s|__GITHUB__|$GITHUB|;
   s|__BRANCH_NAME__|$BRANCH_NAME|;
-  " -i ocp/app.yml ; cat ocp/app.yml ; oc new-app -f ocp/app.yml 
+  " -i ocp/app.yml 
 
-#; oc start-build $ENV -w ; oc rollout latest $ENV 
+oc new-app -f ocp/app.yml 
+
+oc start-build $ENV -F -w 
+
+#oc rollout latest $ENV 
 
 if [ $? != 0 ]; then
   exit 1
