@@ -28,10 +28,9 @@ sed "
 
 oc new-app -f ocp/app.yml 
 
-oc start-build $ENV -w 
+oc start-build $ENV
 
-if [ $? != 0 ]; then
-  exit 1
-fi
+#wait time for build and deploy app
+sleep 20
 
 echo ">> Deployed to getup cluster - Just wait the build finish"
