@@ -26,7 +26,7 @@ sed "
   s|__BRANCH_NAME__|$BRANCH_NAME|;
   " -i ocp/app.yml 
 
-oc new-app -f ocp/app.yml 
+oc new-app -f ocp/app.yml && echo $?
 
 oc start-build $ENV -F -w 
 
