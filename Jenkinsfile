@@ -89,8 +89,9 @@ def userApproval () {
 	stage 'userApproval'
 	timeout(time: 5, unit: 'MINUTES'){
 	    try {
-	    input message: 'Is this version ready ?', submitter: 'dev,admin'
+	    input message: 'Is this version ready ? In 1 hour this step will be processed automatically!', submitter: 'dev,admin'
 		} catch (err) {
+		    sh "ocp/cleanup.sh"
 		    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
 		    error ("aqui foi abortado") 
 		}
