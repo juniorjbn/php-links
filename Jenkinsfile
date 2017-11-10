@@ -87,11 +87,13 @@ def allTests () {
 
 def userApproval () {
 	stage 'userApproval'
-    try {
-    input message: 'Is this version ready ?', submitter: 'dev,admin'
-	} catch (err) {
-	    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
-	    error ("aqui foi abortado") 
+	timeout(time: 5, unit: 'MINUTES'){
+	    try {
+	    input message: 'Is this version ready ?', submitter: 'dev,admin'
+		} catch (err) {
+		    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
+		    error ("aqui foi abortado") 
+		}
 	}
 }
 
