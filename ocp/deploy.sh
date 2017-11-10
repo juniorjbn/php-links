@@ -14,17 +14,17 @@ export HOSTNAME=$ENV-$PROJECT.$DOMAIN
 
 echo ">> Deploying ..."
 
-cat ocp/app.yml | envsubst | oc new-app -f - 
+# cat ocp/app.yml | envsubst | oc new-app -f - 
 
-oc start-build $ENV -F -w
+# oc start-build $ENV -F -w
 
-# sed "
-#   s|__HOSTNAME__|$HOSTNAME|;
-#   s|__ENV__|$ENV|;
-#   s|__IMAGE_TAG__|$IMAGE_TAG|;
-#   s|__GITHUB__|$GITHUB|;
-#   s|__BRANCH_NAME__|$BRANCH_NAME|;
-#   " -i ocp/app.yml ; oc new-app -f ocp/app.yml ; oc start-build $ENV -F -w 
+sed "
+  s|__HOSTNAME__|$HOSTNAME|;
+  s|__ENV__|$ENV|;
+  s|__IMAGE_TAG__|$IMAGE_TAG|;
+  s|__GITHUB__|$GITHUB|;
+  s|__BRANCH_NAME__|$BRANCH_NAME|;
+  " -i ocp/app.yml ; oc new-app -f ocp/app.yml ; oc start-build $ENV -F -w 
 
 if [ $? != 0 ]; then
   exit 1
