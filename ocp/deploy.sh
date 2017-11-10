@@ -28,12 +28,10 @@ sed "
 
 oc new-app -f ocp/app.yml 
 
-oc start-build $ENV
-
-#oc rollout latest $ENV 
+oc start-build $ENV -w 
 
 if [ $? != 0 ]; then
   exit 1
 fi
 
-echo ">> Deployed to getup cluster"
+echo ">> Deployed to getup cluster - Just wait the build finish"
