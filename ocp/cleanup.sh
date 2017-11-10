@@ -2,7 +2,9 @@
 
 set -ex
 
-ENV="$BRANCH_NAME"
+PREFIX="app"
+
+ENV="$PREFIX-$BRANCH_NAME"
 
 echo ">> Deleting merged apps"
 oc delete bc -l "app-$ENV"
