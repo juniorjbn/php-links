@@ -85,7 +85,7 @@ objects:
           - name: DOCUMENTROOT
             value: /public
           name: container
-          image: $IMAGE_TAG
+          image: __IMAGE_TAG__
           imagePullPolicy: Always
           ports:
           - name: web-port
@@ -118,7 +118,7 @@ objects:
     labels:
       app: __ENV__
   spec:
-    host: $HOSTNAME
+    host: __HOSTNAME__
     to:
       kind: Service
       name: __ENV__
