@@ -60,7 +60,7 @@ def masterDevDeploy () {
 	openshiftVerifyDeployment(deploymentConfig: 'app-dev', verbose: 'true', waitTime: '10', waitUnit: 'min')
 }
 
-def sonarqubeScannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+def scannerHome = tool 'SonarQubeScanner';
 
 def allTests () {
 	pipeline {
@@ -86,7 +86,7 @@ def allTests () {
 	          },
 	          "SonarQube" : {
 	          	node('master') {
-	          		sh "${sonarqubeScannerHome}/bin/sonar-scanner "
+	          		sh "${scannerHome}/bin/sonar-scanner "
 	          	}
 	          }
 	        )
@@ -112,9 +112,8 @@ def userApproval () {
 def userApproval2 () {
 	stage 'userApproval'
     try {
-    input message: 'Is this version ready ? In 1 hour this step will be processed automatically!', submitter: 'dev,admin'
+    input message: 'Is this version ready ?', submitter: 'admin'
 	} catch (err) {
-	    sh "ocp/cleanup.sh"
 	    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
 	    error ("Aborted Here2") 
 	}
