@@ -64,7 +64,6 @@ def masterDevDeploy () {
 def allTests () {
 	pipeline {
 	  agent none
-	  def scannerHome = tool 'SonarQubeScanner'
 	  stages {
 	    stage("Distributed Tests") {
 	      steps {
