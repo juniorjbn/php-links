@@ -11,6 +11,7 @@ node {
         allTests()
         userApproval()
         branchCleanup()
+        msgbranchCleanup()
     }
  
     /* master branch dev-qa-prod */
@@ -47,6 +48,9 @@ def branchDeploy () {
 def branchCleanup () {
 	stage 'branchCleanup'
     sh "ocp/cleanup.sh"
+}
+
+def msgbranchCleanup () {
     slackSend channel: 'aristides', color: '#f74545', message: ":thumbsup_all: - PROJECT - ${env.JOB_NAME} - (${GIT_COMMIT}) - Branch environment deleted!"
 }
 
@@ -87,13 +91,13 @@ def allTests () {
 
 def userApproval () {
 	stage 'userApproval'
-	timeout(time: 60, unit: 'MINUTES'){
+	timeout(time: 15, unit: 'MINUTES'){
 	    try {
-	    input message: 'Is this version ready ? In 1 hour this step will be processed automatically!', submitter: 'dev,admin'
+	    input message: 'Is this version ready ? In 15 Minutes this step will be processed automatically!', submitter: 'dev,admin'
 		} catch (err) {
 		    sh "ocp/cleanup.sh"
 		    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
-		    error ("aqui foi abortado") 
+		    error ("Aborted Here") 
 		}
 	}
 }
@@ -105,7 +109,7 @@ def userApproval2 () {
 	} catch (err) {
 	    sh "ocp/cleanup.sh"
 	    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
-	    error ("aqui foi abortado") 
+	    error ("Aborted Here2") 
 	}
 }
 
