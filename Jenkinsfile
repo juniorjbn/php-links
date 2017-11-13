@@ -16,6 +16,7 @@ node {
  
     /* master branch dev-qa-prod */
     if  ( env.BRANCH_NAME == 'master' ) {
+        SonarQubeAnalysis()
         allTests()
         masterDevDeploy()
         allTests()
@@ -61,6 +62,16 @@ def masterDevDeploy () {
 	openshiftVerifyDeployment(deploymentConfig: 'app-dev', verbose: 'true', waitTime: '10', waitUnit: 'min')
 }
 
+def SonarQubeAnalysis () {
+    stage('SonarQube analysis') { 
+      // requires SonarQube Scanner 2.8+
+      def scannerHome = tool 'SonarQube Scanner 2.6.1';
+      withSonarQubeEnv('SonarQubeScanner') {
+      sh "${scannerHome}/bin/sonar-scanner"
+      }  
+    }
+}
+
 def allTests () {
 	pipeline {
 	  agent none
@@ -82,11 +93,6 @@ def allTests () {
 	            node('master') {
 	              sh "echo from IE6"
 	            }
-	          },
-	          "SonarQube" : {
-	          	node('master') {
-	          		sh "${scannerHome}/bin/sonar-scanner "
-	          	}
 	          }
 	        )
 	      }
