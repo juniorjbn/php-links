@@ -16,6 +16,7 @@ node {
  
     /* master branch dev-qa-prod */
     if  ( env.BRANCH_NAME == 'master' ) {
+        allTests()
         masterDevDeploy()
         allTests()
         promoteQA()
@@ -63,7 +64,7 @@ def masterDevDeploy () {
 def allTests () {
 	pipeline {
 	  agent none
-	  scannerHome = tool 'SonarQubeScanner'
+	  def scannerHome = tool 'SonarQubeScanner'
 	  stages {
 	    stage("Distributed Tests") {
 	      steps {
