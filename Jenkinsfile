@@ -87,7 +87,7 @@ def allTests () {
 
 def userApproval () {
 	stage 'userApproval'
-	timeout(time: 5, unit: 'MINUTES'){
+	timeout(time: 60, unit: 'MINUTES'){
 	    try {
 	    input message: 'Is this version ready ? In 1 hour this step will be processed automatically!', submitter: 'dev,admin'
 		} catch (err) {
