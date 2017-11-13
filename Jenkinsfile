@@ -77,6 +77,11 @@ def allTests () {
 	    stage("Distributed Tests") {
 	      steps {
 	        parallel (
+	          "phpunit" : {
+	            node('master') {
+	              sh "oc exec `oc get pods -l app=app-dev | tail -n1 | awk '{print $1}'` './vendor/bin/phpunit'
+	            }
+	          },
 	          "Firefox" : {
 	            node('master') {
 	              sh "echo from Firefox"
