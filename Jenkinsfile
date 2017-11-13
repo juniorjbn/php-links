@@ -60,11 +60,10 @@ def masterDevDeploy () {
 	openshiftVerifyDeployment(deploymentConfig: 'app-dev', verbose: 'true', waitTime: '10', waitUnit: 'min')
 }
 
-def scannerHome = tool 'SonarQubeScanner';
-
 def allTests () {
 	pipeline {
 	  agent none
+	  scannerHome = tool 'SonarQubeScanner'
 	  stages {
 	    stage("Distributed Tests") {
 	      steps {
