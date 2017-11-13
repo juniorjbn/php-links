@@ -65,7 +65,7 @@ def masterDevDeploy () {
 def SonarQubeAnalysis () {
     stage('SonarQube analysis') { 
       // requires SonarQube Scanner 2.8+
-      def scannerHome = tool 'SonarQube Scanner';
+      def scannerHome = tool 'SonarQubeScanner';
       withSonarQubeEnv('SonarQubeScanner') {
       sh "${scannerHome}/bin/sonar-scanner"
       }  
