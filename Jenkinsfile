@@ -16,9 +16,8 @@ node {
  
     /* master branch dev-qa-prod */
     if  ( env.BRANCH_NAME == 'master' ) {
-        SonarQubeAnalysis()
-        allTests()
         masterDevDeploy()
+        SonarQubeAnalysis()
         allTests()
         promoteQA()
         userApproval2()
@@ -64,7 +63,6 @@ def masterDevDeploy () {
 
 def SonarQubeAnalysis () {
     stage('SonarQube analysis') { 
-      // requires SonarQube Scanner 2.8+
       def scannerHome = tool 'SonarQubeScanner';
       withSonarQubeEnv('SonarQubeScanner') {
       sh "${scannerHome}/bin/sonar-scanner"
@@ -135,7 +133,7 @@ def promoteQA () {
 def promotePROD () {
 	stage 'promotePROD'
     openshiftTag(srcStream: "app-dev", srcTag: "latest", destStream: "app-dev", destTag: "prodready")
-    openshiftDeploy(depCfg: 'app-prod', namespace: 'aristides', verbose: 'true', waitTime: '10', waitUnit: 'min')
+    openshiftDeploy(depCfg: 'app-prod', namespace: 'aristides', verbose: 'false', waitTime: '10', waitUnit: 'min')
     openshiftVerifyDeployment(deploymentConfig: 'app-prod')
 }
 
