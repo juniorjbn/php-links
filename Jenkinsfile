@@ -79,7 +79,7 @@ def allTests () {
 	        parallel (
 	          "phpunit" : {
 	            node('master') {
-	              sh "oc exec `oc get pods -l app=app-dev | tail -n1 | awk '{print $1}'` './vendor/bin/phpunit'
+	              sh "oc exec $(oc get pods -l app=app-dev | tail -n1 | cut -d' ' -f1) ./vendor/bin/phpunit"
 	            }
 	          },
 	          "Firefox" : {
