@@ -60,6 +60,8 @@ def masterDevDeploy () {
 	openshiftVerifyDeployment(deploymentConfig: 'app-dev', verbose: 'true', waitTime: '10', waitUnit: 'min')
 }
 
+def sonarqubeScannerHome = tool name: 'SonarQubeScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+
 def allTests () {
 	pipeline {
 	  agent none
@@ -81,6 +83,11 @@ def allTests () {
 	            node('master') {
 	              sh "echo from IE6"
 	            }
+	          },
+	          "SonarQube" : {
+	          	node('master') {
+	          		sh "${sonarqubeScannerHome}/bin/sonar-scanner "
+	          	}
 	          }
 	        )
 	      }
