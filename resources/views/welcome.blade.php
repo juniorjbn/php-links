@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="links">
-                    Clean Example #2
+                    Clean Example #3
                     <br>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                 @foreach ($links as $link) 
                     <li>{{ $link->title }}</li>
                 @endforeach
-                <li>New Name2</li> <!-- Usuario HardCoded-->
+                <li>New Name</li> <!-- Usuario HardCoded-->
             </div>
         </div>
     </body>
