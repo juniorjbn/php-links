@@ -66,6 +66,11 @@ def SonarQubeAnalysis () {
       def scannerHome = tool 'SonarQubeScanner';
       withSonarQubeEnv('SonarQubeScanner') {
       sh "${scannerHome}/bin/sonar-scanner"
+      sh "sleep 3"
+      }
+      def qualitygate = waitForQualityGate();
+      if (qualitygate.status != "OK") {
+      error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
       }  
     }
 }
