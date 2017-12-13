@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="links">
-                    Clean Example #3
+                    Clean Example #4
                     <br>
                 </div>
             </div>
