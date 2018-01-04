@@ -38,7 +38,7 @@ def slackStartJob () {
     stage 'slackStartJob'
     sh 'git log -1 --pretty=%B > commit-log.txt'
     GIT_COMMIT=readFile('commit-log.txt').trim()
-    slackSend channel: 'aristides', color: '#37d660', message: ":metal: - PROJECT - ${env.JOB_NAME} - Environment created and on the road! - (${GIT_COMMIT})"
+    slackSend channel: 'ci-cd', color: '#37d660', message: ":metal: - PROJECT - ${env.JOB_NAME} - Environment created and on the road! - (${GIT_COMMIT})"
 }
 
 def branchDeploy () {
