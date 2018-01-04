@@ -57,7 +57,7 @@ def msgbranchCleanup () {
 
 def masterDevDeploy () {
 	stage 'masterDevDeploy'
-	openshiftBuild(buildConfig: 'app-dev', showBuildLogs: 'true')
+	openshiftBuild(buildConfig: 'app-dev', showBuildLogs: 'false')
 	openshiftVerifyDeployment(deploymentConfig: 'app-dev', verbose: 'true', waitTime: '10', waitUnit: 'min')
 }
 
@@ -66,7 +66,7 @@ def SonarQubeAnalysis () {
       def scannerHome = tool 'SonarQubeScanner';
       withSonarQubeEnv('SonarQubeScanner') {
       sh "${scannerHome}/bin/sonar-scanner"
-      sh "sleep 5"
+      sh "sleep 10"
       }
       def qualitygate = waitForQualityGate();
       if (qualitygate.status != "OK") {
