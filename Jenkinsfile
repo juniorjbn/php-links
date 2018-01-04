@@ -116,7 +116,7 @@ def userApproval () {
 	    input message: 'Is this version ready ? In 15 Minutes this step will be processed automatically!', submitter: 'dev,admin'
 		} catch (err) {
 		    sh "ocp/cleanup.sh"
-		    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
+		    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Environmet auto deleted - ${env.JOB_NAME}"
 		    error ("Aborted Here") 
 		}
 	}
@@ -124,7 +124,7 @@ def userApproval () {
 
 def userApproval2 () {
 	stage 'userApproval'
-	slackSend channel: 'aristides', color: '#42e2f4', message: ":dusty_stick: - CTO - Please evaluate the Project - ${env.JOB_NAME} - http://jenkins-aristides.getup.io/blue/organizations/jenkins/${env.JOB_NAME}/detail/master/${env.BUILD_NUMBER}/pipeline/ "
+	slackSend channel: 'aristides', color: '#42e2f4', message: ":dusty_stick: - CTO - Please evaluate the Project - ${env.JOB_NAME} - http://jenkins-aristides.getup.io/blue/organizations/jenkins/aristides/detail/master/${env.BUILD_NUMBER}/pipeline/ "
     try {
     input message: 'Is this version ready ?', submitter: 'admin'
 	} catch (err) {
