@@ -38,7 +38,7 @@ def slackStartJob () {
     stage 'slackStartJob'
     sh 'git log -1 --pretty=%B > commit-log.txt'
     GIT_COMMIT=readFile('commit-log.txt').trim()
-    slackSend channel: 'ci-cd', color: '#37d660', message: ":metal: - PROJECT - ${env.JOB_NAME} - Pipeline on the road! - (${GIT_COMMIT})"
+    slackSend channel: 'aristides', color: '#37d660', message: ":metal: - PROJECT - ${env.JOB_NAME} - Pipeline on the road! - (${GIT_COMMIT})"
 }
 
 def branchDeploy () {
@@ -111,6 +111,7 @@ def allTests () {
 
 def userApproval () {
 	stage 'userApproval'
+	slackSend channel: 'aristides', color: '#42e2f4', message: ":dusty_stick: - CTO - Please evaluate the Project - ${env.JOB_NAME} - http://jenkins-aristides.getup.io/blue/organizations/jenkins/${env.JOB_NAME}/detail/${env.JOB_NAME}/${env.BUILD_NUMBER}/pipeline/ "
 	timeout(time: 15, unit: 'MINUTES'){
 	    try {
 	    input message: 'Is this version ready ? In 15 Minutes this step will be processed automatically!', submitter: 'dev,admin'
@@ -124,6 +125,7 @@ def userApproval () {
 
 def userApproval2 () {
 	stage 'userApproval'
+	slackSend channel: 'aristides', color: '#42e2f4', message: ":dusty_stick: - CTO - Please evaluate the Project - ${env.JOB_NAME} - http://jenkins-aristides.getup.io/blue/organizations/jenkins/${env.JOB_NAME}/detail/${env.JOB_NAME}/${env.BUILD_NUMBER}/pipeline/ "
     try {
     input message: 'Is this version ready ?', submitter: 'admin'
 	} catch (err) {
