@@ -111,6 +111,7 @@ def allTests () {
 
 def userApproval () {
 	stage 'userApproval'
+	slackSend channel: 'aristides', color: '#3399ff', message: ":point_up_2::skin-tone-2: - DEV - Please check out your app at : - http://app-${env.BRANCH_NAME}-aristides.getup.io/ "
 	timeout(time: 15, unit: 'MINUTES'){
 	    try {
 	    input message: 'Is this version ready ? In 15 Minutes this step will be processed automatically!', submitter: 'dev,admin'
