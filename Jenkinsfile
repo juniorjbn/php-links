@@ -97,7 +97,7 @@ def allTests () {
 	              sh "echo from Chrome"
 	            }
 	          },
-	          "IE6 : )" : {
+	          "IE6" : {
 	            node('master') {
 	              sh "echo from IE6"
 	            }
