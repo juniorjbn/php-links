@@ -44,6 +44,7 @@ def slackStartJob () {
 def branchDeploy () {
 	stage 'branchDeploy'
 	sh "ocp/deploy.sh"
+	openshiftVerifyDeployment(deploymentConfig: "app-${env.BRANCH_NAME}")
 }
 
 def branchCleanup () {
