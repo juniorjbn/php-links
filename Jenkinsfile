@@ -115,7 +115,7 @@ def userApproval () {
 	slackSend channel: 'aristides', color: '#3399ff', message: ":point_up_2::skin-tone-2: - DEV - Please check out your app at : - http://app-${env.BRANCH_NAME}-aristides.getup.io/ "
 	timeout(time: 15, unit: 'MINUTES'){
 	    try {
-	    input message: 'Is this version ready ? In 15 Minutes this step will be processed automatically!', submitter: 'dev,admin'
+	    input message: 'Is this version ready ? In 15 Minutes this step will be processed automatically!', id: 'input1', submitter: 'dev,admin'
 		} catch (err) {
 		    sh "ocp/cleanup.sh"
 		    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Environmet auto deleted - ${env.JOB_NAME}"
@@ -128,7 +128,7 @@ def userApproval2 () {
 	stage 'userApproval'
 	slackSend channel: 'aristides', color: '#42e2f4', message: ":dusty_stick: - CTO - Please evaluate the Project - ${env.JOB_NAME} - http://jenkins-aristides.getup.io/blue/organizations/jenkins/aristides/detail/master/${env.BUILD_NUMBER}/pipeline/ "
     try {
-    input message: 'Is this version ready ?', submitter: 'admin'
+    input message: 'Is this version ready ?', id: 'input1', submitter: 'admin'
 	} catch (err) {
 	    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Pipeline Aborted"
 	    error ("Aborted Here2") 
