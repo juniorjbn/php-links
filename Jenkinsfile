@@ -20,7 +20,7 @@ node {
         SonarQubeAnalysis()
         allTests()
         promoteQA()
-        userApproval2()
+        userApproval3()
         promotePROD()
         slackFinishedJob()
     }
@@ -135,6 +135,10 @@ def userApproval2 () {
 	}
 }
 
+def userApproval3 () {
+	stage 'userApproval'
+  	sh './slack-hook.sh'
+}
 
 def promoteQA () {
 	stage 'promoteQA'
