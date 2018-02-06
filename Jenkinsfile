@@ -118,7 +118,7 @@ def userApproval () {
 	    input message: 'Is this version ready ? In 15 Minutes this step will be processed automatically!', id: 'input1', submitter: 'dev,admin'
 		} catch (err) {
 		    sh "ocp/cleanup.sh"
-		    slackSend channel: 'aristides', color: '#1e602f', message: ":goberserk: - Environmet auto deleted - ${env.JOB_NAME}"
+		    slackSend channel: 'aristides', color: '#1e602f', message: ":wave: - Environmet auto deleted - ${env.JOB_NAME}"
 		    error ("Aborted Here") 
 		}
 	}
