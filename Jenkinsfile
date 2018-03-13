@@ -17,6 +17,7 @@ node {
     /* master branch dev-qa-prod */
     if  ( env.BRANCH_NAME == 'master' ) {
         masterDevDeploy()
+        SonarQubeAnalysis()
         allTests()
         promoteQA()
         userApproval3()
@@ -58,7 +59,6 @@ def msgbranchCleanup () {
 def masterDevDeploy () {
 	stage 'masterDevDeploy'
 	openshiftBuild(buildConfig: 'app-dev')
-	openshiftVerifyDeployment(deploymentConfig: 'app-dev', verbose: 'false', waitTime: '10', waitUnit: 'min')
 }
 
 def SonarQubeAnalysis () {
@@ -149,14 +149,12 @@ def promoteQA () {
 	stage 'promoteQA'
     openshiftTag(srcStream: "app-dev", srcTag: "latest", destStream: "app-dev", destTag: "qaready")
     openshiftDeploy(depCfg: 'app-qa', namespace: 'aristides', verbose: 'false', waitTime: '10', waitUnit: 'min')
-    openshiftVerifyDeployment(deploymentConfig: 'app-qa')
 }
 
 def promotePROD () {
 	stage 'promotePROD'
     openshiftTag(srcStream: "app-dev", srcTag: "latest", destStream: "app-dev", destTag: "prodready")
     openshiftDeploy(depCfg: 'app-prod', namespace: 'aristides', verbose: 'false', waitTime: '10', waitUnit: 'min')
-    openshiftVerifyDeployment(deploymentConfig: 'app-prod')
 }
 
 def slackFinishedJob () {
