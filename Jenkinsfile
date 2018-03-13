@@ -1,3 +1,5 @@
+#!groovy
+
 node {
     checkout()
     slackStartJob()
@@ -6,7 +8,6 @@ node {
     if  ( env.BRANCH_NAME != 'master' ) {
         branchCleanup()
         branchDeploy()
-        allTests()
         userApproval()
         branchCleanup()
         msgbranchCleanup()
@@ -16,7 +17,6 @@ node {
     if  ( env.BRANCH_NAME == 'master' ) {
         masterDevDeploy()
         SonarQubeAnalysis()
-        allTests()
         promoteQA()
         userApproval3()
         promotePROD()
