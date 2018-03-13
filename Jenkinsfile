@@ -17,7 +17,6 @@ node {
     /* master branch dev-qa-prod */
     if  ( env.BRANCH_NAME == 'master' ) {
         masterDevDeploy()
-        SonarQubeAnalysis()
         allTests()
         promoteQA()
         userApproval3()
