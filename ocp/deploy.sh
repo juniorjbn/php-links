@@ -10,7 +10,7 @@ DOMAIN=$(echo "$JENKINS_URL" | cut -d\. -f2,3 | rev | cut -c 2- | rev)
 export GITHUB="https://github.com/juniorjbn/php-links.git"
 export ENV=$PREFIX-$BRANCH_NAME
 export IMAGE_TAG="docker-registry.default.svc:5000/$PROJECT/$ENV"
-export HOSTNAME=$ENV-$PROJECT.$DOMAIN
+export HOSTNAME=$(tr -t '[A-Z]' '[a-z]' <<<$ENV-$PROJECT.$DOMAIN)
 
 echo ">> Deploying ..."
 
