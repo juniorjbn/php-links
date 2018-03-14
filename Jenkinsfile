@@ -8,6 +8,7 @@ node {
     if  ( env.BRANCH_NAME != 'master' ) {
         branchCleanup()
         branchDeploy()
+        allTests()
         userApproval()
         branchCleanup()
         msgbranchCleanup()
@@ -17,6 +18,7 @@ node {
     if  ( env.BRANCH_NAME == 'master' ) {
         masterDevDeploy()
         SonarQubeAnalysis()
+        allTests()
         promoteQA()
         userApproval3()
         promotePROD()
@@ -74,37 +76,28 @@ def SonarQubeAnalysis () {
 }
 
 def allTests () {
-	pipeline {
-	  agent none
-	  stages {
-	    stage("Distributed Tests") {
-	      steps {
-	        parallel (
-	          "phpunit" : {
-	            node('master') {
-	              sh "oc exec `oc get pods -l app=app-dev | tail -n1 | cut -d' ' -f1` ./vendor/bin/phpunit"
-	            }
-	          },
-	          "Firefox" : {
-	            node('master') {
-	              sh "echo from Firefox"
-	            }
-	          },
-	          "Chrome" : {
-	            node('master') {
-	              sh "echo from Chrome"
-	            }
-	          },
-	          "IE6" : {
-	            node('master') {
-	              sh "echo from IE6"
-	            }
-	          }
-	        )
-	      }
-	    }
-	  }
-	}
+    parallel (
+      "phpunit" : {
+        node('master') {
+          sh "oc exec `oc get pods -l app=app-dev | tail -n1 | cut -d' ' -f1` ./vendor/bin/phpunit"
+        }
+      },
+      "Firefox" : {
+        node('master') {
+          sh "echo from Firefox"
+        }
+      },
+      "Chrome" : {
+        node('master') {
+          sh "echo from Chrome"
+        }
+      },
+      "IE6" : {
+        node('master') {
+          sh "echo from IE6"
+        }
+      }
+    )
 }
 
 def userApproval () {
