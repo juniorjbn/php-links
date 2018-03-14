@@ -1,29 +1,29 @@
 #!groovy
 
 node {
-    checkout()
-    slackStartJob()
+	checkout()
+	slackStartJob()
 
-    /* feature branch */
-    if  ( env.BRANCH_NAME != 'master' ) {
-        branchCleanup()
-        branchDeploy()
-        allTests()
-        userApproval()
-        branchCleanup()
-        msgbranchCleanup()
+	/* feature branch */
+	if ( env.BRANCH_NAME != 'master' ) {
+		branchCleanup()
+		branchDeploy()
+		allTests()
+		userApproval()
+		branchCleanup()
+		msgbranchCleanup()
     }
  
-    /* master branch dev-qa-prod */
-    if  ( env.BRANCH_NAME == 'master' ) {
-        masterDevDeploy()
-        SonarQubeAnalysis()
-        allTests()
-        promoteQA()
-        userApproval3()
-        promotePROD()
-        slackFinishedJob()
-    }
+	/* master branch dev-qa-prod */
+	if ( env.BRANCH_NAME == 'master' ) {
+		masterDevDeploy()
+		SonarQubeAnalysis()
+		allTests()
+		promoteQA()
+		userApproval3()
+		promotePROD()
+		slackFinishedJob()
+	}
 }
 
 /* ### def stages ### */
