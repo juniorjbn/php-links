@@ -1,0 +1,3 @@
+DEV_APP_NAME="app-dev"
+PREFIX="app"
+NAMESPACE="aristides"

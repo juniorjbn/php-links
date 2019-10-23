@@ -2,9 +2,7 @@
 
 set -ex
 
-DEV_APP_NAME="app-dev"
-PREFIX="app"
-NAMESPACE="aristides"
+source values.txt
 
 export APPBRANCH=$PREFIX-$BRANCH_NAME
 

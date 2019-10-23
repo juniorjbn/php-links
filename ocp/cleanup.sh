@@ -2,13 +2,17 @@
 
 set -ex
 
-PREFIX="app"
+source ./ocp/values.txt
 
-ENV="$PREFIX-$BRANCH_NAME"
+export APPBRANCH=$PREFIX-$BRANCH_NAME
+
+#variable exported by Jenkins
+ENV="$BRANCH_NAME"
 
 echo ">> Deleting merged apps"
-oc delete buildConfig -l "app-$ENV"
-oc delete deploymentConfig -l "app-$ENV"
-oc delete imageStream -l "app-$ENV"
-oc delete route -l "$HOSTNAME"
-oc delete all -l "app=$ENV"
+oc -n "$NAMESPACE" delete buildConfig -l app="$APPBRANCH"
+oc -n "$NAMESPACE" delete deploymentConfig -l app="$APPBRANCH"
+oc -n "$NAMESPACE" delete imageStream -l app="$APPBRANCH"
+oc -n "$NAMESPACE" delete route -l app="$APPBRANCH"
+oc -n "$NAMESPACE" delete all -l app="$APPBRANCH"
+
