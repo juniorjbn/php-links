@@ -2,7 +2,7 @@
 
 set -ex
 
-source values.txt
+source ./ocp/values.txt
 
 export APPBRANCH=$PREFIX-$BRANCH_NAME
 
