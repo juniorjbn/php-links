@@ -2,14 +2,14 @@
 
 set -ex
 
-source values.txt
+source ./ocp/values.txt
 
 export APPBRANCH=$PREFIX-$BRANCH_NAME
 
 echo ">> Deploying new branch ..."
 
 oc -n $NAMESPACE get --export bc/$DEV_APP_NAME dc/$DEV_APP_NAME svc/$DEV_APP_NAME route/$DEV_APP_NAME -o yaml | \
- sed -e "s/app-dev/$APPBRANCH/" -e "s/ref: master/ref: $BRANCH_NAME/" | \
+ sed -e "s/$DEV_APP_NAME/$APPBRANCH/" -e "s/ref: master/ref: $BRANCH_NAME/" | \
  oc -n $NAMESPACE apply -f -
 
 #Estou criando apenas o imagestream "por fora" pois ele tem um padrão e é bem simples e não é alterado com a interação no dia a dia

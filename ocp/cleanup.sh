@@ -10,9 +10,5 @@ export APPBRANCH=$PREFIX-$BRANCH_NAME
 ENV="$BRANCH_NAME"
 
 echo ">> Deleting merged apps"
-oc -n "$NAMESPACE" delete buildConfig -l app="$APPBRANCH"
-oc -n "$NAMESPACE" delete deploymentConfig -l app="$APPBRANCH"
-oc -n "$NAMESPACE" delete imageStream -l app="$APPBRANCH"
-oc -n "$NAMESPACE" delete route -l app="$APPBRANCH"
-oc -n "$NAMESPACE" delete all -l app="$APPBRANCH"
+oc -n "$NAMESPACE" delete bc/$APPBRANCH dc/$APPBRANCH svc/$APPBRANCH route/$APPBRANCH is/$APPBRANCH 
 
