@@ -2,35 +2,26 @@
 
 set -ex
 
+DEV_APP_NAME="app-dev"
 PREFIX="app"
+NAMESPACE="aristides"
 
-PROJECT=$(echo "$JENKINS_URL" | cut -d\. -f1 | cut -d\- -f2-)
-DOMAIN=$(echo "$JENKINS_URL" | cut -d\. -f2,3 | rev | cut -c 2- | rev)
+export APPBRANCH=$PREFIX-$BRANCH_NAME
 
-export GITHUB="https://github.com/juniorjbn/php-links.git"
-export ENV=$PREFIX-$BRANCH_NAME
-export IMAGE_TAG="docker-registry.default.svc:5000/$PROJECT/$ENV"
-export HOSTNAME=$(tr -t '[A-Z]' '[a-z]' <<<$ENV-$PROJECT.$DOMAIN)
+echo ">> Deploying new branch ..."
 
-echo ">> Deploying ..."
+oc -n $NAMESPACE get --export bc/$DEV_APP_NAME dc/$DEV_APP_NAME svc/$DEV_APP_NAME route/$DEV_APP_NAME -o yaml | \
+ sed -e "s/app-dev/$APPBRANCH/" -e "s/ref: master/ref: $BRANCH_NAME/" | \
+ oc -n $NAMESPACE apply -f -
 
-# cat ocp/app.yml | envsubst | oc new-app -f - 
-
-# oc start-build $ENV -F -w
-
+#Estou criando apenas o imagestream "por fora" pois ele tem um padrão e é bem simples e não é alterado com a interação no dia a dia
 sed "
-  s|__HOSTNAME__|$HOSTNAME|;
-  s|__ENV__|$ENV|;
-  s|__IMAGE_TAG__|$IMAGE_TAG|;
-  s|__GITHUB__|$GITHUB|;
-  s|__BRANCH_NAME__|$BRANCH_NAME|;
-  " -i ocp/app.yml 
+  s|__APPBRANCH__|$APPBRANCH|;
+  s|__NAMESPACE__|$NAMESPACE|;
+  " ocp/is_template.yaml | \
+oc -n $NAMESPACE create -f -
 
-oc new-app -f ocp/app.yml 
+oc -n $NAMESPACE start-build $APPBRANCH --follow --wait
 
-oc start-build $ENV
-
-#wait time for build and deploy app
-sleep 20
-
-echo ">> Deployed to getup cluster - Just wait the build finish"
+echo ">> Deployed to cluster - Just wait the build finish"
+ 
