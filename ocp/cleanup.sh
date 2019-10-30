@@ -10,5 +10,5 @@ export APPBRANCH=$PREFIX-$BRANCH_NAME
 ENV="$BRANCH_NAME"
 
 echo ">> Deleting merged apps"
-oc -n "$NAMESPACE" delete bc/$APPBRANCH dc/$APPBRANCH svc/$APPBRANCH route/$APPBRANCH is/$APPBRANCH 
+oc -n "$NAMESPACE" delete bc/$APPBRANCH dc/$APPBRANCH svc/$APPBRANCH route/$APPBRANCH is/$APPBRANCH --ignore-not-found=true 
 
